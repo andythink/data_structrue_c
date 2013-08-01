@@ -8,6 +8,5 @@ int main(int argc, char const *argv[])
 
 void a(int * n)
 {
-
 	printf("%d \n",* n);
 }
