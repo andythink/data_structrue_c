@@ -21,7 +21,6 @@ BTLink create()
 	while(1)
 	{	
 		
-		// scanf("%c", &ch);
 		ch = DATA[i++];
 		printf("%c\n", ch);
 		switch(ch)
@@ -121,30 +120,92 @@ void visitLayer(BTLink T)
 
 }
 
+BTLink copyTree(BTLink T)
+{
+	
+	if (T == NULL)
+	{
+		return NULL;
+	}
+	BTLink p = (BTLink)malloc(sizeof(BTNode));
+	p->data =  T->data;
+	p->lchild = copyTree(T->lchild);
+	p->rchild = copyTree(T->rchild);
+	return p;	
+
+}
+
+int depth(BTLink T)
+{
+	BTLink STACK1[MAXSIZE], p = T;
+	int STACK2[MAXSIZE];
+	int currentDepth, maxDepth = 0, top =  -1;
+	if (T != NULL)
+	{
+		currentDepth = 1;
+		do{
+			while(p != NULL)
+			{
+				STACK1[++top] = p;
+				STACK2[top] = currentDepth;
+				p = p->lchild;
+				currentDepth ++;
+			}
+			p = STACK1[top];
+			currentDepth = STACK2[top--];
+			if (p->lchild == NULL && p->rchild == NULL)
+			{
+				if (currentDepth > maxDepth)
+				{
+					maxDepth = currentDepth;
+				}
+			}
+			p = p->rchild;
+			currentDepth++;
+		}while(p != NULL || top != -1);
+	}
+
+	return maxDepth;
+
+
+}
+
 
 int main(int argc, char const *argv[])
 {
+	// init data
 	for (int i = 0; DATA[i] != '@'; ++i)
 	{
 		printf("%c", DATA[i]);
 	}
 	printf("@\n------------------------------------------------------------------------------\n");
+	//create BTree with init data
 	BTLink T = create();
-	int num = countLeaf(T);
-	printf("%c\n", T->data);
-	printf("%d\n", num);
+
+
+	int num = countLeaf(T);	
+	printf("leaf num is: %d\n", num);
+
 	printf("visitFront:");
 	visitFront(T);
 	printf("\n");
+
 	printf("visitMiddle:");
 	visitMiddle(T);
-
 	printf("\n");
+
 	printf("visitBehind:");
 	visitBehind(T);
-
 	printf("\n");
+
 	printf("visitLayer:");
 	visitLayer(T);
+
+	printf("\ncopyTree: ");
+	BTLink T1 = copyTree(T);
+	visitLayer(T1);
+
+	int n = depth(T);
+	printf("\ndepthNum: %d\n", n);
 	return 0;
 }
