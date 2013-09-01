@@ -151,8 +151,10 @@ int depth(BTLink T)
 				p = p->lchild;
 				currentDepth ++;
 			}
+
 			p = STACK1[top];
 			currentDepth = STACK2[top--];
+
 			if (p->lchild == NULL && p->rchild == NULL)
 			{
 				if (currentDepth > maxDepth)
@@ -160,6 +162,7 @@ int depth(BTLink T)
 					maxDepth = currentDepth;
 				}
 			}
+			
 			p = p->rchild;
 			currentDepth++;
 		}while(p != NULL || top != -1);
